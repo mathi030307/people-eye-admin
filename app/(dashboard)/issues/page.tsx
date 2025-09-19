@@ -47,7 +47,7 @@ export default function IssuesPage() {
   useEffect(() => {
     async function fetchReports() {
       try {
-        const res = await fetch("http://localhost:3131/api/reports");
+        const res = await fetch("https://people-eye-server.onrender.com/api/reports");
         const data = await res.json();
         const reportsArray = Array.isArray(data) ? data : data.reports || [];
         setIssues(reportsArray);
