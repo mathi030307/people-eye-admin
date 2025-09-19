@@ -28,7 +28,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Search, Filter } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const statusColors = {
   pending: "bg-chart-2 text-white",
@@ -47,7 +52,9 @@ export default function IssuesPage() {
   useEffect(() => {
     async function fetchReports() {
       try {
-        const res = await fetch("https://people-eye-server.onrender.com/api/reports");
+        const res = await fetch(
+          "https://people-eye-server.onrender.com/api/reports"
+        );
         const data = await res.json();
         const reportsArray = Array.isArray(data) ? data : data.reports || [];
         setIssues(reportsArray);
@@ -108,8 +115,12 @@ export default function IssuesPage() {
     <div className="p-6 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Issues Management</h1>
-        <p className="text-muted-foreground">Track and manage all reported issues</p>
+        <h1 className="text-3xl font-bold text-foreground">
+          Issues Management
+        </h1>
+        <p className="text-muted-foreground">
+          Track and manage all reported issues
+        </p>
       </div>
 
       {/* Stats Cards */}
@@ -122,19 +133,25 @@ export default function IssuesPage() {
         </Card>
         <Card>
           <CardContent className="p-4">
-            <div className="text-2xl font-bold text-chart-2">{getStatusCount("pending")}</div>
+            <div className="text-2xl font-bold text-chart-2">
+              {getStatusCount("pending")}
+            </div>
             <p className="text-sm text-muted-foreground">Pending</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <div className="text-2xl font-bold text-chart-3">{getStatusCount("in-progress")}</div>
+            <div className="text-2xl font-bold text-chart-3">
+              {getStatusCount("in-progress")}
+            </div>
             <p className="text-sm text-muted-foreground">In Progress</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <div className="text-2xl font-bold text-chart-1">{getStatusCount("solved")}</div>
+            <div className="text-2xl font-bold text-chart-1">
+              {getStatusCount("solved")}
+            </div>
             <p className="text-sm text-muted-foreground">Solved</p>
           </CardContent>
         </Card>
@@ -144,7 +161,9 @@ export default function IssuesPage() {
       <Card>
         <CardHeader>
           <CardTitle>Issues List</CardTitle>
-          <CardDescription>Manage and track all reported issues</CardDescription>
+          <CardDescription>
+            Manage and track all reported issues
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -157,7 +176,10 @@ export default function IssuesPage() {
                 className="pl-10"
               />
             </div>
-            <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
+            <Select
+              value={statusFilter}
+              onValueChange={handleStatusFilterChange}
+            >
               <SelectTrigger className="w-full sm:w-48">
                 <Filter className="h-4 w-4 mr-2" />
                 <SelectValue placeholder="Filter by status" />
@@ -192,23 +214,36 @@ export default function IssuesPage() {
                     <TableCell>{issue.description}</TableCell>
                     <TableCell>{issue.category}</TableCell>
                     <TableCell>
-                      <Badge className={statusColors[issue.status as keyof typeof statusColors]}>
+                      <Badge
+                        className={
+                          statusColors[
+                            issue.status as keyof typeof statusColors
+                          ]
+                        }
+                      >
                         {issue.status}
                       </Badge>
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-2">
-                        {issue.images?.map((img: string, idx: number) => (
-                          <Image
-                            key={idx}
-                            src={img}
-                            alt={`Issue ${idx}`}
-                            width={50}
-                            height={50}
-                            className="cursor-pointer rounded"
-                            onClick={() => setSelectedImage(img)}
-                          />
-                        ))}
+                        {issue.images?.map((img: string, idx: number) => {
+                          // If img is already an absolute URL, keep it. Otherwise, prefix with backend URL.
+                          const imageUrl = img.startsWith("http")
+                            ? img
+                            : `https://people-eye-server.onrender.com/${img}`;
+
+                          return (
+                            <Image
+                              key={idx}
+                              src={imageUrl}
+                              alt={`Issue ${idx}`}
+                              width={50}
+                              height={50}
+                              className="cursor-pointer rounded"
+                              onClick={() => setSelectedImage(imageUrl)}
+                            />
+                          );
+                        })}
                       </div>
                     </TableCell>
                     <TableCell>
@@ -227,13 +262,18 @@ export default function IssuesPage() {
           </div>
 
           {filteredIssues.length === 0 && (
-            <div className="text-center py-8 text-muted-foreground">No issues found.</div>
+            <div className="text-center py-8 text-muted-foreground">
+              No issues found.
+            </div>
           )}
         </CardContent>
       </Card>
 
       {/* Image Modal */}
-      <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
+      <Dialog
+        open={!!selectedImage}
+        onOpenChange={() => setSelectedImage(null)}
+      >
         <DialogContent className="max-w-4xl">
           <DialogHeader>
             <DialogTitle>Preview Image</DialogTitle>
